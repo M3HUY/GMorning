@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good Morning, My Sunshine! ☀️</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #fff0f3 0%, #ffe3e8 40%, #ffd6ff 100%);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --primary-pink: #ff758f;
+            --secondary-pink: #ff4d6d;
+            --soft-pink: #fff0f5;
+            --warm-peach: #ffb7b2;
+            --accent-yellow: #ffb703;
+            --text-color: #594a4e;
+            --text-dark: #3a2e39;
+            --shadow: 0 10px 30px rgba(255, 117, 143, 0.15);
+            --radius-lg: 24px;
+            --radius-sm: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px 15px 60px 15px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .ambient-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+            animation: floatUp 12s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0.6) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { transform: translateY(-10vh) scale(1.1) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .top-controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #ffccd5;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            color: var(--secondary-pink);
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1) rotate(5deg);
+            background: var(--primary-pink);
+            color: white;
+            border-color: var(--primary-pink);
+        }
+
+        .header-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .sun-graphic {
+            font-size: 55px;
+            display: inline-block;
+            animation: pulseSun 4s infinite ease-in-out;
+            margin-bottom: 5px;
+            filter: drop-shadow(0 4px 10px rgba(255, 183, 3, 0.3));
+        }
+
+        @keyframes pulseSun {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.12) rotate(10deg); }
+        }
+
+        .greeting-time {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-pink);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .main-title {
+            font-family: 'Caveat', cursive;
+            font-size: 2.8rem;
+            color: var(--secondary-pink);
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        /* Music Player Card */
+        .music-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .music-card label {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary-pink);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        audio {
+            width: 100%;
+            max-width: 400px;
+            height: 40px;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .polaroid-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 5px 0;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 12px 12px 25px 12px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            transform: rotate(-2deg);
+            transition: transform 0.3s ease;
+            position: relative;
+            max-width: 280px;
+            width: 100%;
+        }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.03);
+        }
+
+        .polaroid-img-container {
+            width: 100%;
+            height: 240px;
+            background: #fff0f3;
+            overflow: hidden;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .polaroid-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .polaroid-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-pink);
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .polaroid-caption {
+            font-family: 'Caveat', cursive;
+            font-size: 1.6rem;
+            text-align: center;
+            color: var(--text-dark);
+            margin-top: 10px;
+        }
+
+        .sticker {
+            position: absolute;
+            font-size: 24px;
+            z-index: 2;
+        }
+        .sticker-top-right { top: -10px; right: -10px; transform: rotate(15deg); }
+        .sticker-bottom-left { bottom: 15px; left: -10px; transform: rotate(-15deg); }
+
+        .envelope-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+
+        .envelope-card h3 {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .note-box {
+            background: #fffdf9;
+            border: 2px dashed #ffb7b2;
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+            min-height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .note-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.65rem;
+            color: #4a3e43;
+            line-height: 1.4;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-pink), var(--secondary-pink));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(255, 77, 109, 0.3);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2deg) scale(1.03);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.4);
+        }
+
+        .checklist-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .checklist-card h3 {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .checklist-desc {
+            font-size: 0.9rem;
+            color: #7a6a70;
+            margin-bottom: 20px;
+        }
+
+        .checklist-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .check-item {
+            background: white;
+            padding: 14px 18px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.25s ease;
+            user-select: none;
+        }
+
+        .check-item.completed {
+            background: #fff0f3;
+            border-color: #ffb7b2;
+        }
+
+        .checkbox-custom {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #ff9ebb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .check-item.completed .checkbox-custom {
+            background: var(--secondary-pink);
+            border-color: var(--secondary-pink);
+        }
+
+        .item-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            flex-grow: 1;
+        }
+
+        .check-item.completed .item-text {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .submit-care-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 14px;
+            font-size: 1.05rem;
+            background: linear-gradient(135deg, #ff9ebb, var(--primary-pink));
+        }
+
+        .affection-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+
+        .affection-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .aff-button {
+            background: white;
+            border: 2px solid #ffccd5;
+            padding: 18px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .aff-button:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-pink);
+        }
+
+        .aff-count {
+            font-size: 0.85rem;
+            background: #fff0f3;
+            color: var(--secondary-pink);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: relative;
+            text-align: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #ffe3e8;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .file-upload-btn {
+            display: inline-block;
+            background: #fff0f3;
+            color: var(--secondary-pink);
+            border: 2px dashed var(--primary-pink);
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .file-upload-btn input[type="file"] {
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #9a8a90;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ambient-container"></div>
+
+    <div class="container">
+        <div class="top-controls">
+            <button class="icon-btn" id="settings-btn" title="Personalize Website" onclick="openSettings()" style="display: none;">⚙️</button>
+        </div>
+
+        <div class="header-card">
+            <div class="sun-graphic">☀️</div>
+            <div class="greeting-time" id="greeting-time">Good Morning</div>
+            <h1 class="main-title" id="gf-name-display">Good Morning, Cutie Pie! 💕</h1>
+            <p class="subtitle" id="custom-sub-display">Sending you cozy warmth, sweet smiles, and endless love to start your day!</p>
+        </div>
+
+        <!-- Visible Audio Player with Direct Link Support -->
+        <div class="music-card">
+            <label>🎵 Play Our Morning Song 💕</label>
+            <audio id="audio-player" controls loop style="width: 100%; max-width: 400px;">
+                <source id="audio-source-1" src="song.mp3" type="audio/mpeg">
+                <source id="audio-source-2" src="our-song.mp3" type="audio/mpeg">
+                <source id="audio-source-3" src="https://raw.githubusercontent.com/M3HUY/GMorning/main/song.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+
+        <!-- Polaroid Photo Frame -->
+        <div class="polaroid-wrapper">
+            <div class="polaroid">
+                <span class="sticker sticker-top-right">🌸</span>
+                <span class="sticker sticker-bottom-left" onclick="openSettings()">✨</span>
+                <div class="polaroid-img-container" id="polaroid-container">
+                    <div class="polaroid-placeholder" id="polaroid-placeholder" style="display: none;">
+                        <span style="font-size: 2.5rem;">📸</span>
+                        <span>Her photo will appear here</span>
+                    </div>
+                    <img id="gf-photo-display" class="polaroid-img" src="gf-photo.jpg" alt="Girlfriend Photo" onerror="handlePhotoError()">
+                </div>
+                <div class="polaroid-caption" id="polaroid-caption">My Favorite Person 💖</div>
+            </div>
+        </div>
+
+        <!-- Love Note Envelope Card -->
+        <div class="envelope-card">
+            <h3>💌 Morning Sweet Note</h3>
+            <div class="note-box">
+                <p class="note-text" id="note-display">"Just wanted to remind you that you are my favorite reason to wake up each morning."</p>
+            </div>
+            <button class="btn-primary" onclick="drawNewNote()">
+                <span>🎁 Draw New Love Note</span>
+            </button>
+        </div>
+
+        <!-- Cozy Morning Care Checklist -->
+        <div class="checklist-card">
+            <h3>☕ Cozy Morning Care Checklist</h3>
+            <p class="checklist-desc">Remember to take care of yourself first today sweetheart!</p>
+            
+            <div class="checklist-items">
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <div class="checkbox-custom">✓</div>
+                    <span class="item-text">Drink a warm glass of water 💧</span>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <div class="checkbox-custom">✓</div>
+                    <span class="item-text">Eat a yummy & hearty breakfast 🥞</span>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <div class="checkbox-custom">✓</div>
+                    <span class="item-text">Stretch gently & take 3 deep breaths 🧘‍♀️</span>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <div class="checkbox-custom">✓</div>
+                    <span class="item-text">Remember that you are deeply loved 💖</span>
+                </div>
+            </div>
+
+            <button class="btn-primary submit-care-btn" onclick="submitChecklist()">
+                <span>🌟 Finished My Morning Care!</span>
+            </button>
+        </div>
+
+        <!-- Love & Hug Interactive Buttons -->
+        <div class="affection-card">
+            <h3 style="color: var(--text-dark); font-size: 1.2rem;">💖 Send Morning Hugs & Kisses</h3>
+            <div class="affection-grid">
+                <button class="aff-button" onclick="sendAffection('hug')">
+                    <span style="font-size: 2rem;">🫂</span>
+                    <span style="font-weight:700;">Give Big Hug</span>
+                    <span class="aff-count" id="hug-counter">0 Hugs Sent</span>
+                </button>
+                <button class="aff-button" onclick="sendAffection('kiss')">
+                    <span style="font-size: 2rem;">💋</span>
+                    <span style="font-weight:700;">Send Sweet Kiss</span>
+                    <span class="aff-count" id="kiss-counter">0 Kisses Sent</span>
+                </button>
+            </div>
+        </div>
+
+        <footer>
+            Made with endless love 💖 | Have a wonderful day, my love!
+        </footer>
+    </div>
+
+    <!-- Personalization Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeSettings()">✕</button>
+            <h2 style="color: var(--secondary-pink); margin-bottom: 15px; font-family: 'Caveat', cursive; font-size: 2.2rem;">Personalize for Her</h2>
+            
+            <div class="form-group">
+                <label>Her Name / Sweet Nickname:</label>
+                <input type="text" id="input-gf-name" placeholder="e.g. Good Morning, My Princess! 💕">
+            </div>
+
+            <div class="form-group">
+                <label>Custom Morning Message:</label>
+                <textarea id="input-sub-message" rows="2" placeholder="Write a warm morning message..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Song File / Direct Audio URL:</label>
+                <input type="text" id="input-song-url" placeholder="Paste direct .mp3 link or 'song.mp3'">
+            </div>
+
+            <div class="form-group">
+                <label>Upload Her Picture:</label>
+                <label class="file-upload-btn">
+                    <span>📁 Choose Image File...</span>
+                    <input type="file" id="input-photo" accept="image/*" onchange="handleImageUpload(event)">
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label>Polaroid Caption:</label>
+                <input type="text" id="input-caption" placeholder="e.g. My Cutest Smile 🌸">
+            </div>
+
+            <button class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;" onclick="saveSettings()">Save & Update ✨</button>
+        </div>
+    </div>
+
+    <!-- Morning Care Success Modal -->
+    <div class="modal-overlay" id="success-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeSuccessModal()">✕</button>
+            <div style="font-size: 4rem; margin-bottom: 10px;">🥰👑</div>
+            <h2 style="color: var(--secondary-pink); font-family: 'Caveat', cursive; font-size: 2.5rem; margin-bottom: 5px;">You're Amazing!</h2>
+            <p style="color: var(--text-dark); margin-bottom: 20px; font-size: 1.05rem;">
+                Thank you for taking care of yourself today! Proud of you sweetheart. Now go conquer the day with your brilliant smile! ✨
+            </p>
+            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="closeSuccessModal()">Yay! ❤️</button>
+        </div>
+    </div>
+
+    <script>
+        const loveNotes = [
+            "Just wanted to remind you that you are my favorite reason to wake up each morning. 🌸",
+            "I hope your morning is as sweet, radiant, and wonderful as your gorgeous smile! ✨",
+            "Here is a big warm virtual hug to start your day. You've got this, sweetheart! 💪💖",
+            "Coupon: Good for 1x Special Warm Breakfast & Unlimited Kisses later! 🎟️💋",
+            "Don't forget to shine bright today, but remember to take gentle pauses and rest. 🌿",
+            "If I were there right now, I'd give you the forehead kiss of the century! 😘☕",
+            "Every morning with you in my life feels like a cozy dream come true. 🧸"
+        ];
+
+        let hugCount = 0;
+        let kissCount = 0;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedData();
+            createAmbientParticles();
+            updateTimeGreeting();
+        });
+
+        function handlePhotoError() {
+            document.getElementById('gf-photo-display').style.display = 'none';
+            document.getElementById('polaroid-placeholder').style.display = 'flex';
+        }
+
+        function updateTimeGreeting() {
+            const hour = new Date().getHours();
+            const timeElement = document.getElementById('greeting-time');
+            if (hour < 12) timeElement.innerText = '✨ Good Morning ✨';
+            else if (hour < 18) timeElement.innerText = '☀️ Good Afternoon ☀️';
+            else timeElement.innerText = '🌙 Good Evening 🌙';
+        }
+
+        function createAmbientParticles() {
+            const container = document.getElementById('ambient-container');
+            const icons = ['🌸', '✨', '💖', '☁️', '🧸', '💕'];
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'ambient-particle';
+                particle.innerText = icons[Math.floor(Math.random() * icons.length)];
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDuration = (8 + Math.random() * 8) + 's';
+                particle.style.animationDelay = (Math.random() * 5) + 's';
+                particle.style.fontSize = (16 + Math.random() * 16) + 'px';
+                container.appendChild(particle);
+            }
+        }
+
+        function toggleCheck(element) {
+            element.classList.toggle('completed');
+            if (element.classList.contains('completed')) {
+                confetti({ particleCount: 25, spread: 60, origin: { y: 0.7 } });
+            }
+        }
+
+        function submitChecklist() {
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            document.getElementById('success-modal').classList.add('active');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.remove('active');
+        }
+
+        function drawNewNote() {
+            const noteText = document.getElementById('note-display');
+            const randomIndex = Math.floor(Math.random() * loveNotes.length);
+            noteText.style.opacity = 0;
+            setTimeout(() => {
+                noteText.innerText = `"${loveNotes[randomIndex]}"`;
+                noteText.style.opacity = 1;
+            }, 200);
+            confetti({ particleCount: 30, spread: 50, origin: { y: 0.6 } });
+        }
+
+        function sendAffection(type) {
+            if (type === 'hug') {
+                hugCount++;
+                document.getElementById('hug-counter').innerText = `${hugCount} Hugs Sent`;
+                confetti({ particleCount: 40, scalar: 1.2, shapes: ['circle'], colors: ['#ff758f', '#ffb7b2'] });
+            } else {
+                kissCount++;
+                document.getElementById('kiss-counter').innerText = `${kissCount} Kisses Sent`;
+                confetti({ particleCount: 40, scalar: 1.2, shapes: ['square'], colors: ['#ff4d6d', '#ffd6ff'] });
+            }
+        }
+
+        function openSettings() { document.getElementById('settings-modal').classList.add('active'); }
+        function closeSettings() { document.getElementById('settings-modal').classList.remove('active'); }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    displayPhoto(e.target.result);
+                    localStorage.setItem('gf_photo', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function displayPhoto(src) {
+            const imgEl = document.getElementById('gf-photo-display');
+            const placeholderEl = document.getElementById('polaroid-placeholder');
+            imgEl.src = src;
+            imgEl.style.display = 'block';
+            placeholderEl.style.display = 'none';
+        }
+
+        function saveSettings() {
+            const name = document.getElementById('input-gf-name').value;
+            const sub = document.getElementById('input-sub-message').value;
+            const songUrl = document.getElementById('input-song-url').value;
+            const caption = document.getElementById('input-caption').value;
+
+            if (name) {
+                document.getElementById('gf-name-display').innerText = name;
+                localStorage.setItem('gf_name', name);
+            }
+            if (sub) {
+                document.getElementById('custom-sub-display').innerText = sub;
+                localStorage.setItem('gf_sub', sub);
+            }
+            if (songUrl) {
+                const player = document.getElementById('audio-player');
+                player.src = songUrl;
+                player.load();
+                localStorage.setItem('gf_song_url', songUrl);
+            }
+            if (caption) {
+                document.getElementById('polaroid-caption').innerText = caption;
+                localStorage.setItem('gf_caption', caption);
+            }
+            closeSettings();
+        }
+
+        function loadSavedData() {
+            const savedName = localStorage.getItem('gf_name');
+            const savedSub = localStorage.getItem('gf_sub');
+            const savedCaption = localStorage.getItem('gf_caption');
+            const savedPhoto = localStorage.getItem('gf_photo');
+            const savedSong = localStorage.getItem('gf_song_url');
+
+            if (savedName) document.getElementById('gf-name-display').innerText = savedName;
+            if (savedSub) document.getElementById('custom-sub-display').innerText = savedSub;
+            if (savedCaption) document.getElementById('polaroid-caption').innerText = savedCaption;
+            if (savedPhoto) displayPhoto(savedPhoto);
+            if (savedSong) {
+                const player = document.getElementById('audio-player');
+                player.src = savedSong;
+                player.load();
+            }
+        }
+    </script>
+</body>
+</html>
